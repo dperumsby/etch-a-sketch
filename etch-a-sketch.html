@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<head>
+    <title>Etch-a-Sketch</title>
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+        }
+
+        .title {
+            text-align: center;
+        }
+
+        .grid {
+            margin: auto;
+            display: grid;
+            width: 400px;
+            height: 400px;
+            border: 1px solid black;
+        }
+
+        .reset {
+            display: block;
+            margin: auto;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">Etch-a-Sketch</h1>
+    <div class="grid"></div>
+    <button id="reset" class="reset">Reset</button>
+    <script>
+        function createGrid(size) {
+            const grid = document.querySelector(".grid");
+            grid.setAttribute("style", `grid-template-columns: repeat(${size}, 1fr); grid-template-rows: repeat(${size}, 1fr)`);
+            for (let i = 0; i < size**2; i++) {
+                const div = document.createElement("div");
+                grid.appendChild(div);
+                const mouseOver = div.addEventListener("mouseover", colorChange);
+            };
+        };
+
+        function colorChange(e) {
+            e.originalTarget.setAttribute("style", "background-color: black");
+        };
+
+        function emptyGrid() {
+            const div = document.querySelector(".grid");
+            while (div.firstChild) {
+                div.removeChild(div.firstChild);
+            };
+        };
+
+        function pickSize() {
+            while (true) {
+                let size = prompt("What length square would you like? (Max 100)");
+                if (size > 100 || size < 0) {
+                    size = alert("I'm sorry, the size must be between 0 and 100 inclusive. Please try again.");
+                } else {
+                    return size;
+                };
+            };
+        };
+
+        function reset(e) {
+            const size = pickSize();
+            emptyGrid();
+            createGrid(size);
+        };
+
+        const resetButton = document.querySelector("#reset");
+        resetButton.addEventListener("click", reset);
+
+        createGrid(16);
+    </script>
+</body>
